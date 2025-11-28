@@ -52,3 +52,7 @@ docker/.pgpass
 output.log
 
 .pgpass
+
+# Ignore .env files
+.env/*
+.env/development/*

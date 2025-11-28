@@ -11,6 +11,10 @@ default: &default
   schema_search_path: rideshare
   prepared_statements: true # enabled by default
   advisory_locks: true # enabled by default
+  host:     <%= ENV.fetch('DATABASE_HOST') %>
+  username: <%= ENV.fetch('POSTGRES_USER') %>
+  password: <%= ENV.fetch('POSTGRES_PASSWORD') %>
+  database: <%= ENV.fetch('POSTGRES_DB') %>
   # Optional (PostgreSQL):
   # checkout_timeout, read_timeout
 
@@ -21,7 +25,6 @@ test:
 development:
   <<: *default
   url: <%= ENV['DATABASE_URL'] %>
-  database: rideshare_development
   variables:
     # https://www.postgresql.org/docs/current/runtime-config-client.html
     statement_timeout: 20000 # (in seconds, consider lowering to 5s for OLTP)
