@@ -1,4 +1,4 @@
-FROM ruby
+FROM ruby:latest
 
 LABEL maintainer="Josh"
 
@@ -20,7 +20,13 @@ yarn \
 graphviz \
 postgresql-client \
 pgbadger \
-pgbouncer
+pgbouncer \
+rbenv
+
+# Set ruby to correct version for project
+RUN git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
+RUN rbenv install 3.2.2
+RUN rbenv global 3.2.2
 
 COPY Gemfile* /usr/src/app/
 WORKDIR /usr/src/app
