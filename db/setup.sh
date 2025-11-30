@@ -39,29 +39,54 @@ if [ -z "$DB_URL" ]; then
 fi
 
 # Set up Roles and Users on your PostgreSQL instance
-psql $DB_URL -v password_to_save=$RIDESHARE_DB_PASSWORD -a -f db/create_role_owner.sql
-psql $DB_URL -a -f db/create_role_readwrite_users.sql
-psql $DB_URL -a -f db/create_role_readonly_users.sql
-psql $DB_URL -v password_to_save=$RIDESHARE_DB_PASSWORD -a -f db/create_role_app_user.sql
-psql $DB_URL -v password_to_save=$RIDESHARE_DB_PASSWORD -a -f db/create_role_app_readonly.sql
+# psql $DB_URL -v password_to_save=$RIDESHARE_DB_PASSWORD -a -f db/create_role_owner.sql
+# psql $DB_URL -a -f db/create_role_readwrite_users.sql
+# psql $DB_URL -a -f db/create_role_readonly_users.sql
+# psql $DB_URL -v password_to_save=$RIDESHARE_DB_PASSWORD -a -f db/create_role_app_user.sql
+# psql $DB_URL -v password_to_save=$RIDESHARE_DB_PASSWORD -a -f db/create_role_app_readonly.sql
+
+# # Set up Rideshare development database
+# psql $DB_URL -a -f db/create_database.sql
+
+# # Revoke database privileges on public, drop public schema
+# psql $DB_URL -a -f db/revoke_drop_public_schema.sql
+
+# # Create rideshare schema
+# psql $DB_URL -a -f db/create_schema.sql
+
+# # Perform GRANT operations
+# psql $DB_URL -a -f db/create_grants_database.sql
+# psql $DB_URL -a -f db/create_grants_schema.sql
+
+# # Alter the default privileges
+# psql $DB_URL -a -f db/alter_default_privileges_readwrite.sql
+# psql $DB_URL -a -f db/alter_default_privileges_readonly.sql
+# psql $DB_URL -a -f db/alter_default_privileges_public.sql
+
+# Without $DB_URL and instead -h database
+PGPASSWORD=$RIDESHARE_DB_PASSWORD psql -U postgres -h database --dbname rideshare_development -w -v password_to_save=$RIDESHARE_DB_PASSWORD -a -f db/create_role_owner.sql
+PGPASSWORD=$RIDESHARE_DB_PASSWORD psql -U postgres -h database --dbname rideshare_development -w -a -f db/create_role_readwrite_users.sql
+PGPASSWORD=$RIDESHARE_DB_PASSWORD psql -U postgres -h database --dbname rideshare_development -w -a -f db/create_role_readonly_users.sql
+PGPASSWORD=$RIDESHARE_DB_PASSWORD psql -U postgres -h database --dbname rideshare_development -w -v password_to_save=$RIDESHARE_DB_PASSWORD -a -f db/create_role_app_user.sql
+PGPASSWORD=$RIDESHARE_DB_PASSWORD psql -U postgres -h database --dbname rideshare_development -w -v password_to_save=$RIDESHARE_DB_PASSWORD -a -f db/create_role_app_readonly.sql
 
 # Set up Rideshare development database
-psql $DB_URL -a -f db/create_database.sql
+PGPASSWORD=$RIDESHARE_DB_PASSWORD psql -U postgres -h database --dbname rideshare_development -w -a -f db/create_database.sql
 
 # Revoke database privileges on public, drop public schema
-psql $DB_URL -a -f db/revoke_drop_public_schema.sql
+PGPASSWORD=$RIDESHARE_DB_PASSWORD psql -U postgres -h database --dbname rideshare_development -w -a -f db/revoke_drop_public_schema.sql
 
 # Create rideshare schema
-psql $DB_URL -a -f db/create_schema.sql
+PGPASSWORD=$RIDESHARE_DB_PASSWORD psql -U postgres -h database --dbname rideshare_development -w -a -f db/create_schema.sql
 
 # Perform GRANT operations
-psql $DB_URL -a -f db/create_grants_database.sql
-psql $DB_URL -a -f db/create_grants_schema.sql
+PGPASSWORD=$RIDESHARE_DB_PASSWORD psql -U postgres -h database --dbname rideshare_development -w -a -f db/create_grants_database.sql
+PGPASSWORD=$RIDESHARE_DB_PASSWORD psql -U postgres -h database --dbname rideshare_development -w -a -f db/create_grants_schema.sql
 
 # Alter the default privileges
-psql $DB_URL -a -f db/alter_default_privileges_readwrite.sql
-psql $DB_URL -a -f db/alter_default_privileges_readonly.sql
-psql $DB_URL -a -f db/alter_default_privileges_public.sql
+PGPASSWORD=$RIDESHARE_DB_PASSWORD psql -U postgres -h database --dbname rideshare_development -w -a -f db/alter_default_privileges_readwrite.sql
+PGPASSWORD=$RIDESHARE_DB_PASSWORD psql -U postgres -h database --dbname rideshare_development -w -a -f db/alter_default_privileges_readonly.sql
+PGPASSWORD=$RIDESHARE_DB_PASSWORD psql -U postgres -h database --dbname rideshare_development -w -a -f db/alter_default_privileges_public.sql
 
 # Add generated password to ~/.pgpass file
 echo "Add to ~/.pgpass"
